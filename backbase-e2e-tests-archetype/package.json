@@ -1,0 +1,30 @@
+{
+  "name": "test",
+  "version": "0.0.1",
+  "description": "test e2e tests",
+  "repository": {
+    "type": "git",
+    "url": "https://stash.backbase.com/scm/esald/test.git"
+  },
+  "main": "protractor.conf.js",
+  "scripts": {
+    "test": "./node_modules/.bin/protractor config/protractor.conf.js",
+    "wd-start": "./node_modules/.bin/webdriver-manager update && ./node_modules/.bin/webdriver-manager start",
+    "lint": "./node_modules/.bin/eslint --fix ./Pages"
+  },
+  "devDependencies": {
+    "protractor": "5.4.2",
+    "jasmine-allure2-reporter": "1.2.0",
+    "jasmine-reporters": "2.3.2",
+    "jasmine-spec-reporter": "^2.7.0",
+    "protractor-jasmine2-screenshot-reporter": "0.3.5",
+    "moment": "^2.24.0",
+    "eslint": "latest",
+    "lodash": "^4.17.10",
+    "babel-eslint": "latest",
+    "eslint-plugin-import": "2.2.0",
+    "eslint-config-airbnb-base": "latest",
+    "request-promise": "^4.2.5",
+    "@backbase/eslint-config-backbase": "^2.1.0"
+  }
+}

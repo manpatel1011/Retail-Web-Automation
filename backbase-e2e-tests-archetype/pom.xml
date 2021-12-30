@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+   <modelVersion>4.0.0</modelVersion>
+
+   <artifactId>e2e-tests</artifactId>
+   <groupId>test</groupId>
+   <version>1.10-SNAPSHOT</version>
+   <name></name>
+   <properties>
+      <aspectj.version>1.7.4</aspectj.version>
+   </properties>
+   <build>
+      <pluginManagement>
+         <plugins>
+            <plugin>
+               <groupId>com.github.eirslett</groupId>
+               <artifactId>frontend-maven-plugin</artifactId>
+               <version>1.4</version>
+            </plugin>
+
+            <plugin>
+               <groupId>io.qameta.allure</groupId>
+               <artifactId>allure-maven</artifactId>
+               <version>2.9</version>
+            </plugin>
+         </plugins>
+      </pluginManagement>
+   </build>
+   <reporting>
+      <excludeDefaults>true</excludeDefaults>
+      <plugins>
+         <plugin>
+            <groupId>ru.yandex.qatools.allure</groupId>
+            <artifactId>allure-maven-plugin</artifactId>
+            <version>2.6</version>
+         </plugin>
+      </plugins>
+   </reporting>
+   <profiles>
+      <profile>
+         <id>local-node</id>
+         <activation>
+            <!--
+ Activation by absense of property. Run without -Dglobal
+-->
+            <property>
+               <name>!global</name>
+            </property>
+         </activation>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>com.github.eirslett</groupId>
+                  <artifactId>frontend-maven-plugin</artifactId>
+                  <!--  Change to true to use Maven proxies  -->
+                  <configuration>
+                     <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
+                  </configuration>
+                  <executions>
+                     <execution>
+                        <id>install node and npm</id>
+                        <goals>
+                           <goal>install-node-and-npm</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                           <nodeVersion>v12.6.0</nodeVersion>
+                           <npmVersion>6.10.1</npmVersion>
+                        </configuration>
+                     </execution>
+                     <execution>
+                        <id>npm install</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                           <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                           <arguments>install</arguments>
+                        </configuration>
+                     </execution>
+                     <execution>
+                        <id>npm test</id>
+                        <phase>test</phase>
+                        <goals>
+                           <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                           <arguments>test -- --suite ${suites}</arguments>
+                           <!--
+<maven.test.failure.ignore>true</maven.test.failure.ignore>
+-->
+                        </configuration>
+                     </execution>
+                  </executions>
+               </plugin>
+               <plugin>
+                  <groupId>io.qameta.allure</groupId>
+                  <artifactId>allure-maven</artifactId>
+                  <executions>
+                     <execution>
+                        <id>html-report</id>
+                        <phase>test</phase>
+                        <goals>
+                           <goal>report</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+   </profiles>
+</project>
